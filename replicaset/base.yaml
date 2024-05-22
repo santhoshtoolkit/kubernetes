@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-demo
+  labels:
+    app.kubernetes.io/name: nginx-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-demo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx-demo
+    spec:
+      containers:
+        - image: nginx:latest
+          name: nginx-demo
+          ports:
+            - containerPort: 80    
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 125m
+              memory: 128Mi
