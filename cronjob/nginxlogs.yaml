@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nginx-access-logs-cleanup
+  labels:
+    app.kubernetes.io/name: nginx-access-logs-cleanup
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: nginx-access-logs-cleanup
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: nginx-access-logs-cleanup
+              image: nginx:latest
+              command: ["/bin/sh", "-c"]
+              args: ["nginx-cleanup-script.sh"]
+              volumeMounts:
+                - name: nginx-logs
+                  mountPath: /var/log/nginx
+          volumes:
+            - name: nginx-logs
+              emptyDir: {}
