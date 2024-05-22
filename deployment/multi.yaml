@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app.kubernetes.io/name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-deployment
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx-deployment
+    spec:
+      containers:
+        - image: nginx:latest
+          name: nginx-server
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-deployment
+  labels:
+    app.kubernetes.io/name: apache-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: apache-deployment
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: apache-deployment
+    spec:
+      containers:
+        - image: httpd:latest
+          name: apache-server
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy-deployment
+  labels:
+    app.kubernetes.io/name: haproxy-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: haproxy-deployment
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: haproxy-deployment
+    spec:
+      containers:
+        - image: haproxy:latest
+          name: haproxy-server
+          ports:
+            - containerPort: 80
